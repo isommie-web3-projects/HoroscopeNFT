@@ -1,13 +1,46 @@
 require("@nomicfoundation/hardhat-toolbox");
+// require("@nomiclabs/hardhat-waffle");
+// require("@openzeppelin/hardhat-upgrades");
+require("dotenv").config();
 
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.20",
+  defaultNetwork: "sepolia",
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+  },
   networks: {
-    hardhat: {},
-    // Uncomment and configure the following if deploying to a testnet or mainnet
-    // rinkeby: {
-    //   url: "https://rinkeby.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-    //   accounts: ["YOUR_PRIVATE_KEY"]
-    // }
-  }
+    sepolia: {
+      url: process.env.SEPOLIA_URL,
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 11155111,
+      saveDeployments: true,
+    },
+  },
+  solidity: {
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+      // viaIR: true,
+    },
+
+    compilers: [
+      {
+        version: "0.8.21",
+      },
+      {
+        version: "0.8.20",
+      },
+    ],
+  },
+  etherscan: {
+    apiKey: {
+      sepolia: process.env.ETHERSCAN_VERIFY_KEY,
+    },
+  },
 };
